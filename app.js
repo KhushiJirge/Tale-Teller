@@ -17,11 +17,18 @@ connectDB()
 
 const app = express()
 
+app.use(express.urlencoded({ extended: false}))
+app.use(express.json())
+
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 } 
 
-app.engine('.hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs'}))
+const {formatDate} = require('./helpers/hbs')
+
+app.engine('.hbs', exphbs.engine({ helpers: {
+    formatDate,
+}, defaultLayout: 'main', extname: '.hbs'}))
 app.set('view engine', '.hbs')
 
 app.use(
@@ -38,6 +45,7 @@ app.use(passport.session())
 
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
+app.use('/stories', require('./routes/stories'))
 
 
 app.use(express.static(path.join(__dirname, 'public')))
