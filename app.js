@@ -24,11 +24,29 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 } 
 
-const {formatDate} = require('./helpers/hbs')
-
-app.engine('.hbs', exphbs.engine({ helpers: {
+const {
     formatDate,
-}, defaultLayout: 'main', extname: '.hbs'}))
+    stripTags,
+    truncate,
+    editIcon,
+    select,
+} = require('./helpers/hbs')
+
+
+app.engine(
+'.hbs',
+exphbs.engine({
+    helpers: {
+    formatDate,
+    stripTags,
+    truncate,
+    editIcon,
+    select,
+    },
+    defaultLayout: 'main',
+    extname: '.hbs',
+})
+)
 app.set('view engine', '.hbs')
 
 app.use(
@@ -42,6 +60,11 @@ app.use(
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use(function (req, res, next) {
+    res.locals.user = req.user || null
+    next()
+})
 
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
