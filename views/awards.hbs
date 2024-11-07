@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awards and Competitions</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="awards-container">
+        <h1>Awards and Competitions</h1>
+        
+        {{#if awards.length}}
+            <div class="awards-list">
+                {{#each awards}}
+                    <div class="award-item">
+                        <h2>{{this.title}}</h2>
+                        {{#if this.genre}}<p><strong>Genre:</strong> {{this.genre}}</p>{{/if}}
+                        {{#if this.entry_fee}}<p><strong>Entry Fee:</strong> {{this.entry_fee}}</p>{{/if}}
+                        {{#if this.deadline}}<p><strong>Deadline:</strong> {{this.deadline}}</p>{{/if}}
+                        {{#if this.prize}}<p><strong>Prize:</strong> {{this.prize}}</p>{{/if}}
+                        {{#if this.description}}<p><strong>Description:</strong> {{this.description}}</p>{{/if}}
+                        {{#if this.details_link}}<p><a href="{{this.details_link}}" target="_blank" rel="noopener noreferrer">More Details</a></p>{{/if}}
+                    </div>
+                {{/each}}
+            </div>
+        {{else}}
+            <p>No awards found at this time.</p>
+        {{/if}}
+    </div>
+</body>
+</html>

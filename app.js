@@ -85,6 +85,8 @@ app.use('/stories', require('./routes/stories'))
 
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use('/awards', require('./routes/awards'));
+
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)) 
