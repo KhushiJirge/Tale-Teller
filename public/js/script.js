@@ -2,6 +2,8 @@ const textArea = document.getElementById('body');
 const genreDiv = document.getElementById('genre');
 const genreInput = document.getElementById('genreInput');
 const storyForm = document.getElementById('storyForm');
+const suggestionBtn = document.getElementById('suggestionBtn');
+const suggestionsDiv = document.getElementById('suggestionsDiv');
     
 textArea.addEventListener('input', async function() {
     try {
@@ -42,4 +44,45 @@ async function analyzeSentiment(text) {
 
 function updateSentimentUI(sentiment) {
     genreDiv.innerHTML = `Genre: ${sentiment}`;
+}
+
+suggestionBtn.addEventListener('click', async function() {
+    try {
+        const text = textArea.value;
+
+        if (text.trim()) {
+            const suggestions = await getSuggestions(text);
+            updateSuggestionsUI(suggestions);
+        }
+
+    } catch (error) {
+        console.error('Error during suggestion generation:', error);
+        suggestionsDiv.innerHTML = 'Error generating suggestions.';
+    }
+});
+
+async function getSuggestions(text) {
+    try {
+        const response = await fetch('/generate-suggestions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+        return data.suggestions; 
+    } catch (error) {
+        console.error('Error during suggestion generation:', error);
+        return ['Error generating suggestions.'];
+    }
+}
+
+function updateSuggestionsUI(suggestions) {
+    suggestionsDiv.innerHTML = '';
+
+    const suggestionElement = document.createElement('p');
+    suggestionElement.innerHTML = `<strong>Suggestions to continue story: </strong> ${suggestion}`;
+    suggestionsDiv.appendChild(suggestionElement);
 }
