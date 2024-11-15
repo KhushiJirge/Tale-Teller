@@ -25,7 +25,6 @@ const StorySchema = new mongoose.Schema({
     },
     genre: {
         type: String,
-        required: true,
         trim: true
     }
 })

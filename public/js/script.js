@@ -1,5 +1,7 @@
 const textArea = document.getElementById('body');
-const sentimentResult = document.getElementById('sentimentResult');
+const genreDiv = document.getElementById('genre');
+const genreInput = document.getElementById('genreInput');
+const storyForm = document.getElementById('storyForm');
     
 textArea.addEventListener('input', async function() {
     try {
@@ -7,15 +9,18 @@ textArea.addEventListener('input', async function() {
 
         if (text.trim()) {
             const sentiment = await analyzeSentiment(text); 
-            updateSentimentUI(sentiment); 
+            
+            updateSentimentUI(sentiment);
+            
+            genreInput.value = sentiment;
         } else {
-            sentimentResult.innerHTML = '';
+            genreDiv.innerHTML = '';
+            genreInput.value = ''; 
         }
     } catch (error) {
         console.error('Error inside input event listener:', error);
     }
 });
-
 
 async function analyzeSentiment(text) {
     try {
@@ -28,7 +33,7 @@ async function analyzeSentiment(text) {
         });
 
         const data = await response.json();
-        return data.genre;
+        return data.genre; 
     } catch (error) {
         console.error('Error during genre detection:', error);
         return 'Error analyzing genre';
@@ -36,5 +41,5 @@ async function analyzeSentiment(text) {
 }
 
 function updateSentimentUI(sentiment) {
-    sentimentResult.innerHTML = `Genre: ${sentiment}`;
+    genreDiv.innerHTML = `Genre: ${sentiment}`;
 }
