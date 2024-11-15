@@ -22,6 +22,11 @@ const StorySchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    genre: {
+        type: String,
+        required: true,
+        trim: true
     }
 })
 

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { ensureAuth } = require('../middleware/auth')
+const axios = require('axios')
 
 const Story = require('../models/Story')
 
@@ -142,41 +143,23 @@ router.get('/user/:userId', ensureAuth, async (req, res) => {
 })
 
 router.post('/analyze-sentiment', ensureAuth, async (req, res) => {
-  const { text } = req.body; 
-  console.log('Text received for sentiment analysis:', text); 
+  const { text } = req.body;  
 
   try {
-    const sentiment = analyzeSentimentAPI(text);
-    console.log('Sentiment analysis result:', sentiment); 
+    const response = await axios.post('http://localhost:5000/classify_genre', {
+      text: text
+    });
 
-    res.json({ sentiment });
+    const genre = response.data.predicted_genre
+
+    res.json({ genre });
+
   } catch (err) {
-    console.error('Error analyzing sentiment:', err); 
-    res.status(500).send('Error analyzing sentiment');
+    console.error('Error analyzing genre:', err); 
+    res.status(500).send('Error analyzing genre');
   }
+
 })
-
-
-function analyzeSentimentAPI(text) {
-  const positiveWords = ['good', 'happy', 'joy', 'positive', 'great'];
-  const negativeWords = ['bad', 'sad', 'angry', 'negative', 'horrible'];
-
-  let sentiment = 'neutral';
-
-  const words = text.split(/\s+/);
-
-  for (const word of words) {
-    if (positiveWords.includes(word.toLowerCase())) {
-      sentiment = 'positive';
-      break;
-    } else if (negativeWords.includes(word.toLowerCase())) {
-      sentiment = 'negative';
-      break;
-    }
-  }
-
-  return sentiment;
-}
 
 
 module.exports = router

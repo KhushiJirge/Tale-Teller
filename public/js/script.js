@@ -28,13 +28,13 @@ async function analyzeSentiment(text) {
         });
 
         const data = await response.json();
-        return data.sentiment;
+        return data.genre;
     } catch (error) {
-        console.error('Error during sentiment analysis:', error);
-        return 'Error analyzing sentiment';
+        console.error('Error during genre detection:', error);
+        return 'Error analyzing genre';
     }
 }
 
 function updateSentimentUI(sentiment) {
-    sentimentResult.innerHTML = `Sentiment: ${sentiment}`;
+    sentimentResult.innerHTML = `Genre: ${sentiment}`;
 }
