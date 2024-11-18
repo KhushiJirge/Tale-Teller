@@ -63,7 +63,7 @@ suggestionBtn.addEventListener('click', async function() {
 
 async function getSuggestions(text) {
     try {
-        const response = await fetch('/generate-suggestions', {
+        const response = await fetch('/stories/generate-suggestions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ async function getSuggestions(text) {
         });
 
         const data = await response.json();
-        return data.suggestions; 
+        return data.result; 
     } catch (error) {
         console.error('Error during suggestion generation:', error);
         return ['Error generating suggestions.'];
@@ -83,6 +83,6 @@ function updateSuggestionsUI(suggestions) {
     suggestionsDiv.innerHTML = '';
 
     const suggestionElement = document.createElement('p');
-    suggestionElement.innerHTML = `<strong>Suggestions to continue story: </strong> ${suggestion}`;
+    suggestionElement.innerHTML = `<strong>Suggestions to continue story: </strong> ${suggestions}`;
     suggestionsDiv.appendChild(suggestionElement);
 }

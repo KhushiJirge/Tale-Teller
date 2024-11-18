@@ -161,5 +161,23 @@ router.post('/analyze-sentiment', ensureAuth, async (req, res) => {
 
 })
 
+router.post('/generate-suggestions', ensureAuth, async (req, res) => {
+  const { text } = req.body;  
+
+  try {
+    const response = await axios.post('http://localhost:5000/generate_suggestions', {
+      text: text
+    });
+
+    const result = response.data.suggestions
+
+    res.json({ result });
+
+  } catch (err) {
+    console.error('Error analyzing the text:', err); 
+    res.status(500).send('Error analyzing the text');
+  }
+
+})
 
 module.exports = router
